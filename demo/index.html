@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @charset "UTF-8";
+        a {
+            text-decoration: none;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        p {
+            color: black
+        }
+
+        .index_header {
+            width: 96%;
+            margin: 0 auto;
+            height: 4.4rem;
+            background: #fff;
+            margin-top: 0;
+            display: flex;
+            border-radius: 0.5rem;
+        }
+
+        .index_header .hlist {
+            flex: 1;
+            text-align: center;
+            padding-top: 0.2rem;
+            border-right: 1px solid #eee;
+        }
+
+        .index_header .hlist img {
+            width: 2rem;
+            height: 2rem;
+            margin: 0 auto;
+        }
+
+        .index_header .hlist:last-child {
+            border-right: none;
+        }
+
+        .item .item_cate {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .item .item_list {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0px 0.5rem;
+        }
+
+        .item .item_list li {
+            width: 33.3%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        .item .item_list li .inner {
+            background: #fff;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .item .item_list li .inner img {
+            width: 100%;
+        }
+
+        .item .item_list li .inner p {
+            padding: 0.2rem 0.5rem;
+            text-align: center;
+        }
+
+        .item .item_list li .inner .title {
+            font-weight: bold;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div id="index">
+        <header class="index_header">
+
+            <div class="hlist">
+                <img src="images/rexiao.png" />
+                <p>热销榜</p>
+            </div>
+
+            <div class="hlist">
+                <img src="images/caidan.png" />
+                <p>点过的菜</p>
+            </div>
+            <div class="hlist">
+
+                <img src="images/sousuo.png" />
+                <p>搜你喜欢</p>
+            </div>
+
+        </header>
+
+        <div class="content" >
+
+         </div>
+    </div>
+</body>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/layui.js"></script>
+
+<!-- <script>
+      $.ajax({
+
+            type: 'get', //方法类型
+
+            url: "http://localhost:3000/gainlist",
+
+            dataType: 'json', //数据类型
+
+            success: function (data) {
+
+                var arr = data.result
+
+                // console.log(arr)
+                $.ajax({
+
+                    type: 'get', //方法类型
+
+                    url: "http://localhost:3000/gainsort",
+
+                    dataType: 'json', //数据类型
+
+                    success: function (data) {
+
+                        var arr2 = data.result
+
+                        console.log(arr2);
+
+                        for (var i = 0; i < arr2.length; i++) {
+                            console.log(arr2.length)
+                            $('<li id="main-a"><h3 class="item_cate">' + arr2[i].sort + '</h3></li>').appendTo($("#main"))
+                        
+                        }
+
+                         for (var i = 0; i < arr.length; i++) {
+                            console.log(arr[i].fenlei)
+                            console.log($("#main-a h3").html())
+                            if (arr[i].feilei == $("#main-a h3").html()) {
+                                 $('<ul class="item_list"><li><div class="inner"><img src="./DingCan/uploads/' + arr[i].tupian + '.jpg"><p class="title">' + arr[i].name + '</p><p class="price">' + arr[i].price + '</p><p class="nierong">' + arr[i].neirong + '</p></div></li></ul>').appendTo($("#main-a"))
+                            }
+}
+                    }
+
+                });
+
+               
+                
+            }
+
+        });
+       
+</script> -->
+<script>
+    $.ajax({
+            url: "http://localhost:3800/gainsort",
+            dataType: "json",
+            type: "GET",
+            success: function (data) {
+                var date = data.result;
+                console.log(date)
+                for (var i = 0; i < date.length; i++) {
+                    var div = $("<div class='item' name=" + date[i].sort + "></div>");
+                    var h3 = $("<h3 class='item_cate'></h3>").html(date[i].sort)
+                    h3.appendTo(div);
+                    div.appendTo(".content")
+                }
+            }
+        })
+        $.ajax({
+				url:"http://localhost:3800/gainlist",
+                dataType:"json",
+				type:"GET",
+				success:function (data) {
+					var date = data.result;
+					console.log(date)
+					for (var i = 0; i < date.length;i++){
+						var item=$(".item .item_cate").eq(i).html()
+						console.log(item);
+						var nimei=$(".item").eq(i)
+						var ul = $("<ul class='item_list'></ul>");
+						for(j=0;j<date.length;j++){
+							if(date[j].fenlei==item){
+							
+							var li = $("<li></li>")
+							var divs = $("<div class='inner'></div>")
+							var img = $("<img class='item_img' src='./DingCan/uploads/"+date[j].tupian+".jpg' alt=''>")
+							var p1 = $("<p class='title'></p>").html(date[j].name)
+							var p2 = $("<p class='price'></p>").html(date[j].price)
+							var p2 = $("<p class='neirong'></p>").html(date[j].neirong)
+		                    img.appendTo(divs)
+		                    p1.appendTo(divs)
+		                    p2.appendTo(divs)
+		                    divs.appendTo(li)
+		                    li.appendTo(ul)
+		                    // console.log(date[i].name);
+		                    
+						}
+						}
+						ul.appendTo($(".item").eq(i))
+					} 
+                }
+			})
+</script>
+
+
+
+</html>
